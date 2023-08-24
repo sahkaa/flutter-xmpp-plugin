@@ -35,6 +35,9 @@ android {
     minifyEnabled false
 
     defaultConfig {
+        configurations {
+            all*.exclude group: 'xpp3', module: 'xpp3'
+        }
         shrinkResources false
         minifyEnabled false
 
