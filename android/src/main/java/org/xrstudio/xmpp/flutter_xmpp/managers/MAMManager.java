@@ -3,6 +3,7 @@ package org.xrstudio.xmpp.flutter_xmpp.managers;
 import org.jivesoftware.smack.packet.Message;
 import org.jivesoftware.smack.tcp.XMPPTCPConnection;
 import org.jivesoftware.smackx.mam.MamManager;
+import org.jivesoftware.smackx.mam.element.MamElements;
 import org.jxmpp.jid.Jid;
 import org.xrstudio.xmpp.flutter_xmpp.Connection.FlutterXmppConnection;
 import org.xrstudio.xmpp.flutter_xmpp.Utils.Utils;
@@ -18,7 +19,6 @@ public class MAMManager {
         XMPPTCPConnection connection = FlutterXmppConnection.getConnection();
 
         if (connection.isAuthenticated()) {
-
             try {
 
                 MamManager mamManager = MamManager.getInstanceFor(connection);
@@ -51,13 +51,14 @@ public class MAMManager {
                     queryArgs.limitResultsToJid(jid);
                 }
 
-                Utils.printLog("MAM query Args " + queryArgs.toString());
+                Utils.printLog("MAM query Args " + queryArgs);
                 org.jivesoftware.smackx.mam.MamManager.MamQuery query = mamManager.queryArchive(queryArgs.build());
-                List<Message> messageList = query.getMessages();
+                List<MamElements.MamResultExtension> messageList = query.getMamResultExtensions();
 
-                for (Message message : messageList) {
-                    Utils.printLog("Received Message " + message.toXML(null));
-                    Utils.broadcastMessageToFlutter(FlutterXmppConnection.getApplicationContext(), message);
+                for (MamElements.MamResultExtension message : messageList) {
+                    Utils.printLog("Received Message " + message.toXML());
+
+                    Utils.broadcastMessageToFlutterMamResultExtension(FlutterXmppConnection.getApplicationContext(), message);
                 }
 
             } catch (Exception e) {
@@ -66,5 +67,4 @@ public class MAMManager {
 
         }
     }
-
 }

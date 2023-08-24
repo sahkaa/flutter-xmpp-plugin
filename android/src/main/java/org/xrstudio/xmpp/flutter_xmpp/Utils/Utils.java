@@ -13,6 +13,7 @@ import org.jivesoftware.smack.util.PacketParserUtils;
 import org.jivesoftware.smackx.chatstates.ChatState;
 import org.jivesoftware.smackx.chatstates.packet.ChatStateExtension;
 import org.jivesoftware.smackx.delay.packet.DelayInformation;
+import org.jivesoftware.smackx.mam.element.MamElements;
 import org.jivesoftware.smackx.pubsub.EventElement;
 import org.jivesoftware.smackx.pubsub.ItemsExtension;
 import org.jivesoftware.smackx.pubsub.PayloadItem;
@@ -163,14 +164,14 @@ public class Utils {
     }
 
     public static void broadcastMessageToFlutter(Context mApplicationContext, Message message) {
-
-        Utils.addLogInStorage(" Action: receiveMessageFromServer, Content: " + message.toXML(null).toString());
+        Utils.addLogInStorage(" Action: receiveMessageFromServer, Content: " + message.toXML().toString());
 
         message = parseEventStanzaMessage(message);
 
         String META_TEXT = Constants.MESSAGE;
         String body = message.getBody();
         String from = message.getFrom().toString();
+        String to = message.getTo().toString();
         String msgId = message.getStanzaId();
         String customText = "";
 
@@ -213,26 +214,26 @@ public class Utils {
             }
         }
 
-        if (!from.equals(FlutterXmppConnection.mUsername)) {
-            //Bundle up the intent and send the broadcast.
-            Intent intent = new Intent(Constants.RECEIVE_MESSAGE);
-            intent.setPackage(mApplicationContext.getPackageName());
-            intent.putExtra(Constants.BUNDLE_FROM_JID, from);
-            intent.putExtra(Constants.BUNDLE_MESSAGE_BODY, body);
-            intent.putExtra(Constants.BUNDLE_MESSAGE_PARAMS, msgId);
-            intent.putExtra(Constants.BUNDLE_MESSAGE_TYPE, message.getType().toString());
-            intent.putExtra(Constants.BUNDLE_MESSAGE_SENDER_JID, from);
-            intent.putExtra(Constants.MEDIA_URL, mediaURL);
-            intent.putExtra(Constants.CUSTOM_TEXT, customText);
-            intent.putExtra(Constants.META_TEXT, META_TEXT);
-            intent.putExtra(Constants.time, time);
-            intent.putExtra(Constants.DELAY_TIME, delayTime);
-            if (chatState != null) {
-                intent.putExtra(Constants.CHATSTATE_TYPE, chatState.toString().toLowerCase());
-            }
-
-            mApplicationContext.sendBroadcast(intent);
+        //Bundle up the intent and send the broadcast.
+        Intent intent = new Intent(Constants.RECEIVE_MESSAGE);
+        intent.setPackage(mApplicationContext.getPackageName());
+        intent.putExtra(Constants.BUNDLE_FROM_JID, from);
+        intent.putExtra(Constants.TO, to);
+        intent.putExtra(Constants.FROM, from);
+        intent.putExtra(Constants.BUNDLE_MESSAGE_BODY, body);
+        intent.putExtra(Constants.BUNDLE_MESSAGE_PARAMS, msgId);
+        intent.putExtra(Constants.BUNDLE_MESSAGE_TYPE, message.getType().toString());
+        intent.putExtra(Constants.BUNDLE_MESSAGE_SENDER_JID, from);
+        intent.putExtra(Constants.MEDIA_URL, mediaURL);
+        intent.putExtra(Constants.CUSTOM_TEXT, customText);
+        intent.putExtra(Constants.META_TEXT, META_TEXT);
+        intent.putExtra(Constants.time, time);
+        intent.putExtra(Constants.DELAY_TIME, delayTime);
+        if (chatState != null) {
+            intent.putExtra(Constants.CHATSTATE_TYPE, chatState.toString().toLowerCase());
         }
+
+        mApplicationContext.sendBroadcast(intent);
     }
 
     private static Message parseEventStanzaMessage(Message message) {
@@ -247,7 +248,7 @@ public class Utils {
                         PayloadItem<?> it = (PayloadItem<?>) items.get(j);
                         SimplePayload payloadElement = (SimplePayload) it.getPayload();
 
-                        String xmlStanza = payloadElement.toXML(null);
+                        String xmlStanza = payloadElement.toXML().toString();
 
                         message = (Message) PacketParserUtils.parseStanza(xmlStanza);
                     }
@@ -290,5 +291,79 @@ public class Utils {
         intent.putExtra(Constants.BUNDLE_CONNECTION_TYPE, connectionState.toString());
         intent.putExtra(Constants.BUNDLE_CONNECTION_ERROR, errorMessage);
         mApplicationContext.sendBroadcast(intent);
+    }
+
+    public static void broadcastMessageToFlutterMamResultExtension(Context applicationContext, MamElements.MamResultExtension message) {
+        Utils.addLogInStorage(" Action: receiveMessageFromServer, Content: " + message.toXML().toString());
+
+
+        Message messageForward = message.getForwarded().getForwardedStanza();
+
+        messageForward = parseEventStanzaMessage(messageForward);
+
+        String META_TEXT = Constants.MESSAGE;
+        String body = messageForward.getBody();
+        String from = messageForward.getFrom().toString();
+        String to = messageForward.getTo().toString();
+        String msgId = messageForward.getStanzaId();
+        String customText = "";
+
+        StandardExtensionElement customElement = (StandardExtensionElement) messageForward
+                .getExtension(Constants.URN_XMPP_CUSTOM);
+        if (customElement != null && customElement.getFirstElement(Constants.custom) != null) {
+            customText = customElement.getFirstElement(Constants.custom).getText();
+        }
+
+        String time = Constants.ZERO;
+        if (messageForward.getExtension(Constants.URN_XMPP_TIME) != null) {
+            StandardExtensionElement timeElement = (StandardExtensionElement) messageForward
+                    .getExtension(Constants.URN_XMPP_TIME);
+            if (timeElement != null && timeElement.getFirstElement(Constants.TS) != null) {
+                time = timeElement.getFirstElement(Constants.TS).getText();
+            }
+        }
+
+        if (messageForward.hasExtension(DeliveryReceipt.ELEMENT, DeliveryReceipt.NAMESPACE)) {
+            DeliveryReceipt dr = DeliveryReceipt.from((Message) messageForward);
+            msgId = dr.getId();
+            META_TEXT = Constants.DELIVERY_ACK;
+        }
+
+        ChatState chatState = null;
+
+        if (messageForward.hasExtension(ChatStateExtension.NAMESPACE)) {
+            META_TEXT = Constants.CHATSTATE;
+            ChatStateExtension chatStateExtension = (ChatStateExtension) messageForward.getExtension(ChatStateExtension.NAMESPACE);
+            chatState = chatStateExtension.getChatState();
+        }
+
+        String mediaURL = "";
+
+        String delayTime = Constants.ZERO;
+        DelayInformation DelayTimeElement = message.getForwarded().getDelayInformation();
+        if (DelayTimeElement != null && DelayTimeElement.getStamp() != null) {
+            delayTime = DelayTimeElement.getStamp().toString();
+        }
+
+        //Bundle up the intent and send the broadcast.
+        Intent intent = new Intent(Constants.RECEIVE_MESSAGE);
+        intent.setPackage(applicationContext.getPackageName());
+        intent.putExtra(Constants.BUNDLE_FROM_JID, from);
+        intent.putExtra(Constants.TO, to);
+        intent.putExtra(Constants.FROM, from);
+        intent.putExtra(Constants.BUNDLE_MESSAGE_BODY, body);
+        intent.putExtra(Constants.BUNDLE_MESSAGE_PARAMS, msgId);
+        intent.putExtra(Constants.BUNDLE_MESSAGE_TYPE, messageForward.getType().toString());
+        intent.putExtra(Constants.BUNDLE_MESSAGE_SENDER_JID, from);
+        intent.putExtra(Constants.MEDIA_URL, mediaURL);
+        intent.putExtra(Constants.CUSTOM_TEXT, customText);
+        intent.putExtra(Constants.META_TEXT, META_TEXT);
+        intent.putExtra(Constants.time, time);
+        intent.putExtra(Constants.DELAY_TIME, delayTime);
+        if (chatState != null) {
+            intent.putExtra(Constants.CHATSTATE_TYPE, chatState.toString().toLowerCase());
+        }
+
+        applicationContext.sendBroadcast(intent);
     }
 }

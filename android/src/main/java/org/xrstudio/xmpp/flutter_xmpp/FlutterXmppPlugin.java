@@ -104,6 +104,7 @@ public class FlutterXmppPlugin implements MethodCallHandler, FlutterPlugin, Acti
                     case Constants.RECEIVE_MESSAGE:
 
                         String from = intent.getStringExtra(Constants.BUNDLE_FROM_JID);
+                        String to = intent.getStringExtra(Constants.BUNDLE_TO_JID);
                         String body = intent.getStringExtra(Constants.BUNDLE_MESSAGE_BODY);
                         String msgId = intent.getStringExtra(Constants.BUNDLE_MESSAGE_PARAMS);
                         String type = intent.getStringExtra(Constants.BUNDLE_MESSAGE_TYPE);
@@ -118,6 +119,7 @@ public class FlutterXmppPlugin implements MethodCallHandler, FlutterPlugin, Acti
                         build.put(Constants.TYPE, metaInfo);
                         build.put(Constants.ID, msgId);
                         build.put(Constants.FROM, from);
+                        build.put(Constants.TO, to);
                         build.put(Constants.BODY, body);
                         build.put(Constants.MSG_TYPE, type);
                         build.put(Constants.SENDER_JID, senderJid);
@@ -136,7 +138,7 @@ public class FlutterXmppPlugin implements MethodCallHandler, FlutterPlugin, Acti
                     // Handle the sending message events.
                     case Constants.OUTGOING_MESSAGE:
 
-                        String to = intent.getStringExtra(Constants.BUNDLE_TO_JID);
+                        to = intent.getStringExtra(Constants.BUNDLE_TO_JID);
                         String bodyTo = intent.getStringExtra(Constants.BUNDLE_MESSAGE_BODY);
                         String idOutgoing = intent.getStringExtra(Constants.BUNDLE_MESSAGE_PARAMS);
                         String typeTo = intent.getStringExtra(Constants.BUNDLE_MESSAGE_TYPE);

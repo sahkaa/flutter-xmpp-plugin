@@ -139,9 +139,9 @@ public class FlutterXmppConnection implements ConnectionListener {
                 muc.sendMessage(xmppMessage);
             }
 
-            Utils.addLogInStorage("Action: sentCustomMessageToServer, Content: " + xmppMessage.toXML(null).toString());
+            Utils.addLogInStorage("Action: sentCustomMessageToServer, Content: " + xmppMessage.toXML().toString());
 
-            Utils.printLog(" Sent custom message from: " + xmppMessage.toXML(null) + "  sent.");
+            Utils.printLog(" Sent custom message from: " + xmppMessage.toXML() + "  sent.");
 
         } catch (SmackException.NotConnectedException e) {
             e.printStackTrace();
@@ -169,7 +169,7 @@ public class FlutterXmppConnection implements ConnectionListener {
 
             mConnection.sendStanza(deliveryMessage);
 
-            Utils.addLogInStorage("Action: sentDeliveryReceiptToServer, Content: " + deliveryMessage.toXML(null).toString());
+            Utils.addLogInStorage("Action: sentDeliveryReceiptToServer, Content: " + deliveryMessage.toXML().toString());
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -428,7 +428,7 @@ public class FlutterXmppConnection implements ConnectionListener {
             ChatState chatState = ChatState.valueOf(status);
             message.addExtension(new ChatStateExtension(chatState));
 
-            Utils.printLog("Sending Typing status " + message.toXML(null));
+            Utils.printLog("Sending Typing status " + message.toXML());
             mConnection.sendStanza(message);
 
         } catch (Exception e) {
@@ -603,9 +603,9 @@ public class FlutterXmppConnection implements ConnectionListener {
                 muc.sendMessage(xmppMessage);
             }
 
-            Utils.addLogInStorage("Action: sentMessageToServer, Content: " + xmppMessage.toXML(null).toString());
+            Utils.addLogInStorage("Action: sentMessageToServer, Content: " + xmppMessage.toXML().toString());
 
-            Utils.printLog(" Sent message from: " + xmppMessage.toXML(null) + "  sent.");
+            Utils.printLog(" Sent message from: " + xmppMessage.toXML() + "  sent.");
 
         } catch (SmackException.NotConnectedException e) {
             e.printStackTrace();

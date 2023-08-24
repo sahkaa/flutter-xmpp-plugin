@@ -1,6 +1,7 @@
 class MessageChat {
   String? customText;
   String? from;
+  String? to;
   String? senderJid;
   String? time;
   String? id;
@@ -16,6 +17,7 @@ class MessageChat {
   MessageChat({
     this.customText,
     this.from,
+    this.to,
     this.senderJid,
     this.time,
     this.id,
@@ -51,6 +53,7 @@ class MessageChat {
     return MessageChat(
       customText: eventData['customText'] ?? '',
       from: eventData['from'] ?? '',
+      to: eventData['to'] ?? '',
       senderJid: eventData['senderJid'] ?? '',
       time: eventData['time'] ?? '0',
       isReadSent: eventData['isReadSent'] ?? 0,

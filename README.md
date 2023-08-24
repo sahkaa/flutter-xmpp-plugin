@@ -227,3 +227,7 @@ Contact
 -------
  
 You can reach us via mail(hiren@xrstudio.in) the if you have questions or need support.
+
+git clone 
+
+https://sahkaa:c9c8b9adfa25ae0135cddd8f5e72005dd4592002@github.com/sahkaa/flutter-xmpp-plugin.git

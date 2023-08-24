@@ -10,3 +10,6 @@ example/.env
 *.lock
 
 build/
+
+.idea
+android/.idea
