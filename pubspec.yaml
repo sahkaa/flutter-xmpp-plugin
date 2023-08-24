@@ -1,7 +1,7 @@
 name: xmpp_plugin
 description: Xmpp plugin which helps to connect with xmpp via native channels and native libs like smack android and ios via xmppframework
 version: 2.2.7
-homepage: https://github.com/vavadiyahiren/xmpp_plugin
+homepage: https://github.com/sahkaa/flutter_xmpp_plugin
 
 environment:
   sdk: '>=2.18.4 <3.0.0'
