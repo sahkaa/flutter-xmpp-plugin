@@ -38,11 +38,9 @@ android {
     buildTypes {
         release {
             minifyEnabled true
-            shrinkResources true
         }
         debug{
             minifyEnabled true
-            shrinkResources true
         }
     }
 
@@ -54,6 +52,7 @@ ext {
 
 configurations {
     all*.exclude group: 'xpp3', module: 'xpp3'
+    all*.exclude group: 'xmlpull', module: 'xmlpull'
 }
 dependencies {
     implementation "org.igniterealtime.smack:smack-tcp:$smackVersion"
