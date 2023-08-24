@@ -2,7 +2,6 @@ group 'org.xrstudio.xmpp'
 version '1.0'
 
 
-
 buildscript {
     repositories {
         google()
@@ -23,12 +22,17 @@ rootProject.allprojects {
 
 apply plugin: 'com.android.library'
 
+
 configurations {
     all*.exclude group: 'xpp3', module: 'xpp3'
 }
-
 android {
+    configurations {
+        all*.exclude group: 'xpp3', module: 'xpp3'
+    }
     compileSdkVersion 33
+    shrinkResources false
+    minifyEnabled false
 
     defaultConfig {
         shrinkResources false
