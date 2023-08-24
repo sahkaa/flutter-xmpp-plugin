@@ -49,6 +49,7 @@ android {
             signingConfig signingConfigs.debug
         }
     }
+    namespace 'org.xrstudio.flutter_xmpp_example'
 }
 
 flutter {
