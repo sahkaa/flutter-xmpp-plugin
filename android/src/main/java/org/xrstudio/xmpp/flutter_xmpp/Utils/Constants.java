@@ -137,7 +137,7 @@ public class Constants {
     public static final String MEDIA_URL = "media_url";
     public static final String META_TEXT = "meta_text";
     public static final String CHATSTATE_TYPE = "chatStateType";
-    public static final String BUNDLE_TO_JID = "c_from";
+    public static final String BUNDLE_TO_JID = "b_to";
     public static final String BUNDLE_FROM_JID = "b_from";
     public static final String BUNDLE_MESSAGE_BODY = "b_body";
     public static final String BUNDLE_PRESENCE_TYPE = "b_presence_type";

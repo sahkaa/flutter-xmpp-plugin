@@ -218,7 +218,7 @@ public class Utils {
         Intent intent = new Intent(Constants.RECEIVE_MESSAGE);
         intent.setPackage(mApplicationContext.getPackageName());
         intent.putExtra(Constants.BUNDLE_FROM_JID, from);
-        intent.putExtra(Constants.TO, to);
+        intent.putExtra(Constants.BUNDLE_TO_JID, to);
         intent.putExtra(Constants.FROM, from);
         intent.putExtra(Constants.BUNDLE_MESSAGE_BODY, body);
         intent.putExtra(Constants.BUNDLE_MESSAGE_PARAMS, msgId);
