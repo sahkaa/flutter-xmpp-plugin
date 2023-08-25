@@ -124,7 +124,7 @@ public class FlutterXmppPlugin implements MethodCallHandler, FlutterPlugin, Acti
                         build.put(Constants.MSG_TYPE, type);
                         build.put(Constants.SENDER_JID, senderJid);
                         build.put(Constants.CUSTOM_TEXT, customText);
-                        build.put(Constants.time, time);
+                        build.put(Constants.time, delayTime);
                         build.put(Constants.CHATSTATE_TYPE, chatStateType);
                         build.put(Constants.DELAY_TIME, delayTime);
 

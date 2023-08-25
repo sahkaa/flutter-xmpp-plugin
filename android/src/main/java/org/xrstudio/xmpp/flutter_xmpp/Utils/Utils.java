@@ -340,17 +340,18 @@ public class Utils {
         String mediaURL = "";
 
         String delayTime = Constants.ZERO;
-        DelayInformation DelayTimeElement = message.getForwarded().getDelayInformation();
-        if (DelayTimeElement != null && DelayTimeElement.getStamp() != null) {
-            delayTime = DelayTimeElement.getStamp().toString();
+        DelayInformation delayTimeElement = message.getForwarded().getDelayInformation();
+        if (delayTimeElement != null && delayTimeElement.getStamp() != null) {
+            delayTime = delayTimeElement.getStamp().toString();
         }
 
         //Bundle up the intent and send the broadcast.
         Intent intent = new Intent(Constants.RECEIVE_MESSAGE);
         intent.setPackage(applicationContext.getPackageName());
         intent.putExtra(Constants.BUNDLE_FROM_JID, from);
-        intent.putExtra(Constants.TO, to);
+        intent.putExtra(Constants.BUNDLE_TO_JID, to);
         intent.putExtra(Constants.FROM, from);
+        intent.putExtra(Constants.TO, to);
         intent.putExtra(Constants.BUNDLE_MESSAGE_BODY, body);
         intent.putExtra(Constants.BUNDLE_MESSAGE_PARAMS, msgId);
         intent.putExtra(Constants.BUNDLE_MESSAGE_TYPE, messageForward.getType().toString());
@@ -358,7 +359,7 @@ public class Utils {
         intent.putExtra(Constants.MEDIA_URL, mediaURL);
         intent.putExtra(Constants.CUSTOM_TEXT, customText);
         intent.putExtra(Constants.META_TEXT, META_TEXT);
-        intent.putExtra(Constants.time, time);
+        intent.putExtra(Constants.time, delayTime);
         intent.putExtra(Constants.DELAY_TIME, delayTime);
         if (chatState != null) {
             intent.putExtra(Constants.CHATSTATE_TYPE, chatState.toString().toLowerCase());
