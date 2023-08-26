@@ -342,7 +342,7 @@ public class Utils {
         String delayTime = Constants.ZERO;
         DelayInformation delayTimeElement = message.getForwarded().getDelayInformation();
         if (delayTimeElement != null && delayTimeElement.getStamp() != null) {
-            delayTime = delayTimeElement.getStamp().toString();
+            delayTime = String.valueOf(delayTimeElement.getStamp().getTime());
         }
 
         //Bundle up the intent and send the broadcast.
