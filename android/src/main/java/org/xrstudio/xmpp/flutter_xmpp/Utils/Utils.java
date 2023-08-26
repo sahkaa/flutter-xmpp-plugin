@@ -210,7 +210,7 @@ public class Utils {
         if (message.hasExtension(Constants.URN_XMPP_RECEIPTS)) {
             DelayInformation DelayTimeElement = (DelayInformation) message.getExtension(Constants.URN_XMPP_DELAY);
             if (DelayTimeElement != null && DelayTimeElement.getStamp() != null) {
-                delayTime = DelayTimeElement.getStamp().toString();
+                delayTime = String.valueOf(DelayTimeElement.getStamp().getTime());
             }
         }
 
