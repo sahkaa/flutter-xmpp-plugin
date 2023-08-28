@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:xmpp_plugin/xmpp_plugin.dart';
 
 import 'main.dart';
@@ -13,7 +14,8 @@ class MamExamples extends StatefulWidget {
 }
 
 class _MamExamplesState extends State<MamExamples> {
-  TextEditingController _userJidController = TextEditingController();
+  TextEditingController _userJidController =
+      TextEditingController(text: dotenv.env['TEST_FRIEND_USER'] as String);
   TextEditingController _requestSinceController = TextEditingController();
   TextEditingController _requestBeforeController = TextEditingController();
   TextEditingController _requestLimitController = TextEditingController();
@@ -100,7 +102,8 @@ class _MamExamplesState extends State<MamExamples> {
   }
 
   void _requestMamMessages(userJid, requestSince, requestBefore, limit) {
-    widget.flutterXmpp.requestMamMessages(userJid, requestSince, requestBefore, limit);
+    widget.flutterXmpp
+        .requestMamMessages(userJid, requestSince, requestBefore, limit);
   }
 
   void _changeTypingStatus(userJid, typingStatus) {

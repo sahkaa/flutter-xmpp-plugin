@@ -27,7 +27,7 @@ PODS:
     - Flutter
   - shared_preferences_ios (0.0.1):
     - Flutter
-  - xmpp_plugin (2.2.5):
+  - xmpp_plugin (2.2.7):
     - Flutter
     - XMPPFramework/Swift
   - XMPPFramework/default (4.0.0):
@@ -80,16 +80,16 @@ SPEC CHECKSUMS:
   CocoaLumberjack: b7e05132ff94f6ae4dfa9d5bce9141893a21d9da
   device_info_plus: e5c5da33f982a436e103237c0c85f9031142abed
   Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
-  integration_test: a1e7d09bd98eca2fc37aefd79d4f41ad37bdbbe5
+  integration_test: 13825b8a9334a850581300559b8839134b124670
   KissXML: 5c8e0f2e8b9f071d3e1ae123dec3eb5da615c10c
   libidn: e4576a956b797c584c77aaedfc6e3dd639b61bdc
   path_provider_ios: 7d7ce634493af4477d156294792024ec3485acd5
   permission_handler_apple: 44366e37eaf29454a1e7b1b7d736c2cceaeb17ce
   share_plus: 056a1e8ac890df3e33cb503afffaf1e9b4fbae68
   shared_preferences_ios: aef470a42dc4675a1cdd50e3158b42e3d1232b32
-  xmpp_plugin: 7071b68fab05ccc38081922eb53d6310ae1d6206
+  xmpp_plugin: df266005516bf4888d84b2417f5e137c80e794ae
   XMPPFramework: 5d31ff9f73dce031b24bc49bcf88093627a3a86e
 
 PODFILE CHECKSUM: 38105f7f2a34b5a15cb070be037c1bd69d0ecc20
 
-COCOAPODS: 1.11.3
+COCOAPODS: 1.12.1

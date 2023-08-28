@@ -35,6 +35,7 @@ class MessageChat {
     return {
       'customText': customText,
       'from': from,
+      'to': to,
       'senderJid': senderJid,
       'time': time,
       'id': id,
