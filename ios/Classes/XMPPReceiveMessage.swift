@@ -39,6 +39,7 @@ extension XMPPController {
           "senderJid": objMess.senderJid,
           "time": objMess.time,
           "to": objMess.jid,
+          "chatStateType": message.mamResult!.forwardedMessage!.chatStateValue ?? "",
           "delayTime": "\(UInt64((message.mamResult?.forwardedStanzaDelayedDeliveryDate?.timeIntervalSince1970 ?? 0) * 1000))"
         ] as [String: Any]
       APP_DELEGATE.objEventData!(dicDate)
@@ -74,6 +75,7 @@ extension XMPPController {
         "senderJid": objMess.senderJid,
         "time": objMess.time,
         "to": objMess.jid,
+        "chatStateType": message.chatStateValue ?? "",
       ] as [String: Any]
     APP_DELEGATE.objEventData!(dicDate)
   }
