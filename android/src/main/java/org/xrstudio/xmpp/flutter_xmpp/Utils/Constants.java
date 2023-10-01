@@ -123,6 +123,8 @@ public class Constants {
     public static final String SEND_MESSAGE = "send_message";
     public static final String SEND_GROUP_MESSAGE = "send_group_message";
     public static final String LOGIN = "login";
+    public static final String ENABLE_PUSH_NOTIFICATION = "enablePushNotification";
+    public static final String DISABLE_PUSH_NOTIFICATION = "disablePushNotification";
     public static final String TO_JID = "to_jid";
     public static final String TO_JID_1 = "toJid";
     public static final String NAVIGATE_FILE_PATH = "nativeLogFilePath";

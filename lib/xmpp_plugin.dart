@@ -68,6 +68,45 @@ class XmppConnection {
     await _channel.invokeMethod('login', auth);
   }
 
+  Future<void> enablePushNotification(
+      String deviceId,
+      String service,
+      String priority,
+      String node,
+      String pushjid,
+      String topic,
+      String silent) async {
+
+    final params = {
+      "deviceId": deviceId,
+      "service": service,
+      "priority": priority,
+      "node": node,
+      "pushjid": pushjid,
+      "topic": topic,
+      "silent": silent
+    };
+    printLogForMethodCall('enablePushNotification', params);
+    await _channel.invokeMethod('enablePushNotification', params);
+  }
+
+  Future<void> disablePushNotification(
+      String deviceId,
+      String service,
+      String priority,
+      String node,
+      String pushjid,
+      String topic,
+      String silent) async {
+
+    final params = {
+      "node": node,
+      "pushjid": pushjid
+    };
+    printLogForMethodCall('disablePushNotification', params);
+    await _channel.invokeMethod('disablePushNotification', params);
+  }
+
   Future<void> logout() async {
     await _channel.invokeMethod('logout');
   }

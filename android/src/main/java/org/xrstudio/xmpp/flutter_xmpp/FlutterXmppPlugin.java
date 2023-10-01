@@ -13,6 +13,7 @@ import org.xrstudio.xmpp.flutter_xmpp.Connection.FlutterXmppConnectionService;
 import org.xrstudio.xmpp.flutter_xmpp.Enum.ConnectionState;
 import org.xrstudio.xmpp.flutter_xmpp.Enum.GroupRole;
 import org.xrstudio.xmpp.flutter_xmpp.Utils.Constants;
+import org.xrstudio.xmpp.flutter_xmpp.Utils.ParamConst;
 import org.xrstudio.xmpp.flutter_xmpp.Utils.Utils;
 import org.xrstudio.xmpp.flutter_xmpp.managers.MAMManager;
 
@@ -29,6 +30,7 @@ import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
 import io.flutter.plugin.common.MethodChannel.Result;
+import org.xrstudio.xmpp.flutter_xmpp.managers.PushNotificationManager;
 
 public class FlutterXmppPlugin implements MethodCallHandler, FlutterPlugin, ActivityAware, EventChannel.StreamHandler {
 
@@ -51,6 +53,15 @@ public class FlutterXmppPlugin implements MethodCallHandler, FlutterPlugin, Acti
     private EventChannel success_channel;
     private EventChannel error_channel;
     private EventChannel connection_channel;
+
+    private String deviceId;
+    private String service;
+    private String priority;
+    private String node;
+    private String pushjid;
+    private String topic;
+    private String silent;
+
     private BroadcastReceiver mBroadcastReceiver = null;
     private BroadcastReceiver successBroadcastReceiver = null;
     private BroadcastReceiver errorBroadcastReceiver = null;
@@ -521,6 +532,40 @@ public class FlutterXmppPlugin implements MethodCallHandler, FlutterPlugin, Acti
                 sendMessage(body, to_jid, id, call.method, time);
 
                 result.success(Constants.SUCCESS);
+                break;
+
+            case Constants.ENABLE_PUSH_NOTIFICATION:
+                // Handle sending message.
+                if (!call.hasArgument(ParamConst.PN_DEVICE_ID)
+                        || !call.hasArgument(ParamConst.PN_SERVICE)
+                        || !call.hasArgument(ParamConst.PN_NODE)
+                        || !call.hasArgument(ParamConst.PN_PUSHJID)) {
+                    result.error("MISSING", "Missing argument DEVICE_ID / SERVICE.", null);
+                }
+
+                deviceId = call.argument(ParamConst.PN_DEVICE_ID);
+                service = call.argument(ParamConst.PN_SERVICE);
+                priority = call.argument(ParamConst.PN_PRIORITY);
+                node = call.argument(ParamConst.PN_NODE);
+                pushjid = call.argument(ParamConst.PN_PUSHJID);
+                topic = call.argument(ParamConst.PN_TOPIC);
+                silent = call.argument(ParamConst.PN_SILENT);
+
+                PushNotificationManager.enablePushNotification(deviceId, service, priority, node, pushjid, topic, silent);
+                result.success("SUCCESS");
+                break;
+
+            case Constants.DISABLE_PUSH_NOTIFICATION:
+                // Handle sending message.
+                if (!call.hasArgument(ParamConst.PN_PUSHJID) || !call.hasArgument(ParamConst.PN_NODE)) {
+                    result.error("MISSING", "Missing argument PUSHJID / NODE.", null);
+                }
+
+                node = call.argument(ParamConst.PN_NODE);
+                pushjid = call.argument(ParamConst.PN_PUSHJID);
+
+                PushNotificationManager.disalbePushNotification(node, pushjid);
+                result.success("SUCCESS");
                 break;
 
             case Constants.JOIN_MUC_GROUPS:
