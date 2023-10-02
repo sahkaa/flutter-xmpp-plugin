@@ -25,7 +25,7 @@ import 'mamExamples.dart';
 const myTask = "syncWithTheBackEnd";
 
 void main() async {
-  await dotenv.load(fileName: "/Users/alexander.yushchenko/projects/sashka/xmpp_plugin/example/.env");
+  await dotenv.load(fileName: ".env");
 
   runApp(MyApp());
 }
