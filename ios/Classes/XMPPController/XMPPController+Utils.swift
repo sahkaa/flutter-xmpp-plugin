@@ -8,7 +8,7 @@
 import Foundation
 import XMPPFramework
 
-func manage_MucSubMesage(_ message : XMPPMessage) -> XMPPMessage? {
+func manage_MucSubMessage(_ message : XMPPMessage) -> XMPPMessage? {
     var newMessage: XMPPMessage?
     
     let arrMI = message.elements(forName: "event")
@@ -18,14 +18,14 @@ func manage_MucSubMesage(_ message : XMPPMessage) -> XMPPMessage? {
         let mess1 =  message.element(forName: "event")?.element(forName: "items")?.element(forName: "item")?.element(forName: "message");
         printLog("\(#function) | didReceive MucSubMessage: \(String(describing: mess1))")
         
-        guard let objMess = getXMPPMesage(usingXMPPMessageString: mess1?.xmlString ?? "") else { return newMessage }
+        guard let objMess = getXMPPMessage(usingXMPPMessageString: mess1?.xmlString ?? "") else { return newMessage }
         newMessage = objMess
         printLog("\(#function) | Getting Mucsub XMPPMessage: \(String(describing: newMessage))")
     }
     return newMessage
 }
 
-func getXMPPMesage(usingXMPPMessageString mess : String) -> XMPPMessage? {
+func getXMPPMessage(usingXMPPMessageString mess : String) -> XMPPMessage? {
     /*
 
     printLog("\(#function) | Muc sub Message")

@@ -44,8 +44,8 @@ public class FlutterXmppPlugin: NSObject, FlutterPlugin {
         
         objErrorEventChannel = FlutterEventChannel(name: "flutter_xmpp/error_event_stream", binaryMessenger: registrar.messenger())
         objErrorEventChannel.setStreamHandler(ErrorStreamHandler())
-        
-        APP_DELEGATE.manange_NotifcationObservers()
+
+        APP_DELEGATE.manage_NotificationObservers()
     }
     //MARK: -
     public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
@@ -117,7 +117,13 @@ public class FlutterXmppPlugin: NSObject, FlutterPlugin {
            
         case pluginMethod.reqMAM:
             self.manageMAMActivity(call, result)
-        
+
+        case pluginMethod.enablePushNotification:
+            self.enablePushNotification(call, result)
+
+        case pluginMethod.disablePushNotification:
+            self.disablePushNotification(call, result)
+
         case pluginMethod.getPresence:
             self.getPresenceActivity(call, result)
                     
@@ -142,7 +148,42 @@ public class FlutterXmppPlugin: NSObject, FlutterPlugin {
         }
         //result("iOS " + UIDevice.current.systemVersion)
     }
-    
+
+    private func disablePushNotification(_ call: FlutterMethodCall, _ result: @escaping (Any?) -> ()) {
+        guard let vData = call.arguments as? [String: Any] else {
+            result(xmppConstants.DataNil);
+            return
+        }
+
+        let node: String = (vData["node"] as? String ?? "").trim()
+        let pushjid: String = (vData["pushjid"] as? String ?? "").trim()
+
+        APP_DELEGATE.singalCallBack = result
+        APP_DELEGATE.objXMPP.disablePushNotification(pushjid: pushjid, node: node, objXMPP: self.objXMPP)
+    }
+
+    private func enablePushNotification(_ call: FlutterMethodCall, _ result: @escaping (Any?) -> ()) {
+        guard let vData = call.arguments as? [String: Any] else {
+            result(xmppConstants.DataNil);
+            return
+        }
+
+        let service: String = (vData["service"] as? String ?? "").trim()
+        let deviceId: String = (vData["device_id"] as? String ?? "").trim()
+        let node: String = (vData["node"] as? String ?? "").trim()
+        let pushjid: String = (vData["pushjid"] as? String ?? "").trim()
+        let silent: String? = (vData["silent"] as? String)?.trim()
+        let priority: String? = (vData["priority"] as? String)?.trim()
+        let topic: String? = (vData["topic"] as? String)?.trim()
+        result(xmppConstants.SUCCESS)
+        APP_DELEGATE.singalCallBack = result
+        APP_DELEGATE.objXMPP.enablePushNotification(
+                deviceId: deviceId, service: service,
+                node: node, pushjid: pushjid,
+                priority: priority, topic: topic, silent: silent,
+                objXMPP: self.objXMPP)
+    }
+
     func performLoginActivity(_ call: FlutterMethodCall, _ result: @escaping FlutterResult)  {
         guard let vData = call.arguments as? [String : Any] else {
             result(xmppConstants.DataNil);
@@ -634,8 +675,8 @@ public class FlutterXmppPlugin: NSObject, FlutterPlugin {
             break
         }
     }
-    
-    public func manange_NotifcationObservers()  {
+
+    public func manage_NotificationObservers()  {
         let notificationCenter = NotificationCenter.default
         notificationCenter.addObserver(self, selector: #selector(notiObs_XMPPConnectionStatus(notfication:)), name: .xmpp_ConnectionStatus, object: nil)
     }

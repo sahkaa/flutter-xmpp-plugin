@@ -24,6 +24,7 @@ class XMPPController: NSObject {
 
     /// Using get chat Archive Messages
     var xmppMAM: XMPPMessageArchiveManagement?  // = XMPPMessageArchiveManagement.init()
+    var xmppPushModule = XMPPPushModule()
 
     internal var hostName: String = ""
     internal var hostPort: Int16 = 0
@@ -89,6 +90,11 @@ class XMPPController: NSObject {
         self.xmppLastActivity = XMPPLastActivity.init()
         self.xmppLastActivity.activate(self.xmppStream)
         self.xmppLastActivity.addDelegate(self, delegateQueue: DispatchQueue.main)
+
+        /// xmppPush Configuration
+        self.xmppPushModule = XMPPPushModule.init()
+        self.xmppPushModule.activate(self.xmppStream)
+        self.xmppPushModule.addDelegate(self, delegateQueue: DispatchQueue.main)
 
         //Archive Messge
         self.xmppMAM = XMPPMessageArchiveManagement.init()
@@ -233,7 +239,7 @@ extension XMPPController {
 
         //------------------------------------------------------------------------
         var tempMessage: XMPPMessage? = message
-        if let objMess = manage_MucSubMesage(message) {
+        if let objMess = manage_MucSubMessage(message) {
             // Manange and Get MUCSUB Message
             tempMessage = objMess
         }

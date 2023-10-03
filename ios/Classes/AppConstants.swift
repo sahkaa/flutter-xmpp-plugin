@@ -29,6 +29,8 @@ struct pluginMethod {
     static let login : String                       = "login"
     static let logout : String                      = "logout"
     static let sendMessage : String                 = "send_message"
+    static let enablePushNotification : String     = "enablePushNotification"
+    static let disablePushNotification : String     = "disablePushNotification"
     static let sendMessageInGroup : String          = "send_group_message"
     static let sendCustomMessage : String           = "send_custom_message"
     static let sendCustomMessageInGroup : String    = "send_customgroup_message"
@@ -74,7 +76,7 @@ struct xmppConstants {
     static let ERROR : String = "ERROR"
     static let SUCCESS : String = "SUCCESS"
     
-    static let Resource : String = "iOS"
+    static let Resource : String = "iOS-sashka"
     static let BODY : String = "body"
     static let ID : String = "id"
     static let TO : String = "to"
